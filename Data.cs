@@ -30,7 +30,8 @@ class TSDataAdapter : IData
     }
     string getChunk(int num)
     {
-        return timeseries.getFrame(int num);
+        string tmp = new string(timeseries.getFrame(int num));
+        return tmp;
     }
     float getElement(string attr, int frame)
     {
