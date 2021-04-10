@@ -15,7 +15,7 @@ class FGClient : INotifyPropertyChanged
     private bool _work;
     private int sleepDaur;
     private int _framesPerSecond;
-    public event  PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
     public int MaxFrame
     {
@@ -30,7 +30,7 @@ class FGClient : INotifyPropertyChanged
     }
     public int FramesPerSecond
     {
-    get
+        get
         {
             return _framesPerSecond;
         }
@@ -107,7 +107,12 @@ class FGClient : INotifyPropertyChanged
     }
 
 
-    public FGClient(IData iData)
+    public FGClient()
+    {
+        
+    }
+
+    public void initialClient(IData iData)
     {
         data = iData;
         Pause = false;
@@ -118,7 +123,6 @@ class FGClient : INotifyPropertyChanged
         zeroSpeed = false;
         MaxFrame = data.getMaxIndex();
     }
-
 
     //This will update the listeners anytime we update an important stat, mostly currentFrame.
     public void NotifyPropertyChanged(string propName)
@@ -175,7 +179,7 @@ class FGClient : INotifyPropertyChanged
     {
         return data.getElement(element, frame);
     }
-    
+
     public void Close()
     {
         Work = false;
@@ -196,7 +200,6 @@ class FGClient : INotifyPropertyChanged
         stream.Write(bytes, 0, frame.Length);
         stream.Flush();
     }
-
     //Start is opening the client and send the info to the FG, the start
     //should be triggered in an independence thread/
     public void Start1()
