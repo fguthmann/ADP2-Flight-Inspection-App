@@ -1,17 +1,19 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 
-interface IData
+public interface IData
 {
-    int getChunkSize();
-    int getMaxIndex();
-    string getChunk(int num);
-    float getElement(string attr, int frame);
+    public int getChunkSize();
+    public int getMaxIndex();
+    public string getChunk(int num);
+    public float getElement(string attr, int frame);
+
+    public void destroy();
 }
 
 
-class TSDataAdapter : IData
+public class TSDataAdapter : IData
 {
     //note that size_t is not compatible with the DLL transition, and therefore the return value is int.
     [DllImport("DllForAnomalyDetector")]
@@ -37,6 +39,10 @@ class TSDataAdapter : IData
     [DllImport("DllForAnomalyDetector", CallingConvention = CallingConvention.Cdecl)]
     //[return: MarshalAs(UnmanagedType.LPStr)]
     public static extern int GetFrameLength(IntPtr ts, int frame);
+
+    //destructor
+    [DllImport("DllForAnomalyDetector")]
+    public static extern void Destroy(IntPtr ts);
 
 
 
@@ -84,4 +90,11 @@ class TSDataAdapter : IData
         return 0;
     }
 
+    public void destroy()
+    {
+        if (timeseries != null)
+        {
+            Destroy(timeseries);
+        }
+    }
 }
